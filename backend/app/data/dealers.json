@@ -1,0 +1,93 @@
+{
+  "_comment": "Sample agro-input dealers. In production this is synced from dealer POS / distributor APIs. Prices are in local currency.",
+  "dealers": [
+    {
+      "id": "d_bd_001",
+      "name": "Krishi Bandhu Agro Store",
+      "country": "BD",
+      "address": "Savar Bazar, Dhaka",
+      "phone": "+8801711000001",
+      "lat": 23.8583,
+      "lon": 90.2667,
+      "opening_hours": "08:00-20:00",
+      "inventory": [
+        {"treatment_id": "rb_org_trichoderma", "in_stock": true, "stock_qty": 40, "price_local": 950},
+        {"treatment_id": "rb_chem_tricyclazole", "in_stock": true, "stock_qty": 25, "price_local": 5600},
+        {"treatment_id": "bs_chem_mancozeb", "in_stock": true, "stock_qty": 60, "price_local": 880},
+        {"treatment_id": "sb_chem_hexaconazole", "in_stock": false, "stock_qty": 0, "price_local": 1650},
+        {"treatment_id": "eb_org_copper", "in_stock": true, "stock_qty": 30, "price_local": 700},
+        {"treatment_id": "lb_chem_metalaxyl_mancozeb", "in_stock": true, "stock_qty": 18, "price_local": 1650}
+      ]
+    },
+    {
+      "id": "d_bd_002",
+      "name": "Shonar Bangla Agro Inputs",
+      "country": "BD",
+      "address": "Ashulia, Dhaka",
+      "phone": "+8801711000002",
+      "lat": 23.8900,
+      "lon": 90.3200,
+      "opening_hours": "09:00-19:00",
+      "inventory": [
+        {"treatment_id": "rb_org_neem", "in_stock": true, "stock_qty": 80, "price_local": 720},
+        {"treatment_id": "rb_chem_isoprothiolane", "in_stock": true, "stock_qty": 12, "price_local": 2600},
+        {"treatment_id": "rb_chem_tricyclazole", "in_stock": true, "stock_qty": 8, "price_local": 5400},
+        {"treatment_id": "sb_org_trichoderma", "in_stock": true, "stock_qty": 20, "price_local": 980},
+        {"treatment_id": "sb_chem_validamycin", "in_stock": true, "stock_qty": 35, "price_local": 1050},
+        {"treatment_id": "bs_org_pseudomonas", "in_stock": true, "stock_qty": 15, "price_local": 820}
+      ]
+    },
+    {
+      "id": "d_bd_003",
+      "name": "Dhamrai Farmers Supply",
+      "country": "BD",
+      "address": "Dhamrai, Dhaka",
+      "phone": "+8801711000003",
+      "lat": 23.9150,
+      "lon": 90.2100,
+      "opening_hours": "08:00-18:00",
+      "inventory": [
+        {"treatment_id": "rb_chem_tricyclazole", "in_stock": true, "stock_qty": 50, "price_local": 5900},
+        {"treatment_id": "bs_chem_propiconazole", "in_stock": true, "stock_qty": 22, "price_local": 2350},
+        {"treatment_id": "sb_chem_hexaconazole", "in_stock": true, "stock_qty": 14, "price_local": 1600},
+        {"treatment_id": "lr_chem_propiconazole", "in_stock": true, "stock_qty": 22, "price_local": 2350},
+        {"treatment_id": "lb_org_copper_hydroxide", "in_stock": true, "stock_qty": 10, "price_local": 1100},
+        {"treatment_id": "lb_chem_cymoxanil", "in_stock": false, "stock_qty": 0, "price_local": 1900}
+      ]
+    },
+    {
+      "id": "d_in_001",
+      "name": "Kisan Seva Kendra",
+      "country": "IN",
+      "address": "Ludhiana, Punjab",
+      "phone": "+919800000001",
+      "lat": 30.9010,
+      "lon": 75.8573,
+      "opening_hours": "09:00-20:00",
+      "inventory": [
+        {"treatment_id": "lr_org_sulfur", "in_stock": true, "stock_qty": 100, "price_local": 260},
+        {"treatment_id": "lr_chem_propiconazole", "in_stock": true, "stock_qty": 40, "price_local": 1700},
+        {"treatment_id": "lr_chem_tebuconazole", "in_stock": true, "stock_qty": 30, "price_local": 1500},
+        {"treatment_id": "lb_chem_metalaxyl_mancozeb", "in_stock": true, "stock_qty": 25, "price_local": 1200},
+        {"treatment_id": "gl_chem_azoxy_propi", "in_stock": true, "stock_qty": 10, "price_local": 2900}
+      ]
+    },
+    {
+      "id": "d_ke_001",
+      "name": "Nakuru Agrovet",
+      "country": "KE",
+      "address": "Nakuru Town",
+      "phone": "+254700000001",
+      "lat": -0.3031,
+      "lon": 36.0800,
+      "opening_hours": "08:00-18:00",
+      "inventory": [
+        {"treatment_id": "gl_org_bacillus", "in_stock": true, "stock_qty": 20, "price_local": 1200},
+        {"treatment_id": "gl_chem_azoxy_propi", "in_stock": true, "stock_qty": 15, "price_local": 4400},
+        {"treatment_id": "lb_org_copper_hydroxide", "in_stock": true, "stock_qty": 30, "price_local": 1150},
+        {"treatment_id": "lb_chem_metalaxyl_mancozeb", "in_stock": true, "stock_qty": 20, "price_local": 1800},
+        {"treatment_id": "eb_chem_chlorothalonil", "in_stock": true, "stock_qty": 12, "price_local": 1550}
+      ]
+    }
+  ]
+}

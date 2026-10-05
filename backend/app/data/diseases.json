@@ -1,0 +1,144 @@
+{
+  "_comment": "Fungal (and oomycete) foliar disease knowledge base. Environmental parameters are approximate optima from extension literature. Prices are indicative USD and should be refreshed from local market data.",
+  "diseases": [
+    {
+      "id": "rice_blast",
+      "crop": "rice",
+      "pathogen": "Magnaporthe oryzae",
+      "name": {"en": "Rice blast", "bn": "ধানের ব্লাস্ট রোগ", "hi": "धान का ब्लास्ट रोग"},
+      "symptoms": {
+        "en": "Diamond-shaped grey-white lesions with brown margins on leaves; neck rot in severe cases.",
+        "bn": "পাতায় ধূসর-সাদা হীরক আকৃতির দাগ, কিনারা বাদামি; তীব্র হলে শীষের গোড়া পচে যায়।",
+        "hi": "पत्तियों पर भूरे किनारे वाले हीरे के आकार के धूसर-सफ़ेद धब्बे; गंभीर होने पर बाली की गर्दन सड़ जाती है।"
+      },
+      "environment": {"t_min": 17, "t_opt_lo": 24, "t_opt_hi": 28, "t_max": 34, "rh_threshold": 89, "wetness_hours": 10},
+      "yield_loss_pct": {"low": 5, "moderate": 15, "high": 30, "severe": 50},
+      "spread_rate": 0.85,
+      "treatments": [
+        {"id": "rb_org_trichoderma", "type": "organic", "product": "Trichoderma viride (bio-fungicide)", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 8.0, "interval_days": 10, "applications": 2, "phi_days": 0, "notes": {"en": "Spray in the evening; mix with 500 L water per hectare.", "bn": "সন্ধ্যায় স্প্রে করুন; প্রতি হেক্টরে ৫০০ লিটার পানিতে মেশান।", "hi": "शाम को छिड़काव करें; प्रति हेक्टेयर 500 लीटर पानी में मिलाएँ।"}},
+        {"id": "rb_org_neem", "type": "organic", "product": "Neem oil 1500 ppm", "dose_per_ha": 3.0, "unit": "L", "unit_price_usd": 6.0, "interval_days": 7, "applications": 2, "phi_days": 0, "notes": {"en": "Preventive; repeat after rain.", "bn": "প্রতিরোধমূলক; বৃষ্টির পর আবার দিন।", "hi": "रोकथाम हेतु; बारिश के बाद दोहराएँ।"}},
+        {"id": "rb_chem_tricyclazole", "type": "chemical", "product": "Tricyclazole 75 WP", "dose_per_ha": 0.3, "unit": "kg", "unit_price_usd": 48.0, "interval_days": 12, "applications": 2, "phi_days": 21, "notes": {"en": "Wear mask and gloves. Do not spray before rain.", "bn": "মাস্ক ও গ্লাভস পরুন। বৃষ্টির আগে স্প্রে করবেন না।", "hi": "मास्क और दस्ताने पहनें। बारिश से पहले छिड़काव न करें।"}},
+        {"id": "rb_chem_isoprothiolane", "type": "chemical", "product": "Isoprothiolane 40 EC", "dose_per_ha": 0.75, "unit": "L", "unit_price_usd": 22.0, "interval_days": 14, "applications": 2, "phi_days": 30, "notes": {"en": "Effective at early neck-blast stage.", "bn": "শীষ ব্লাস্টের শুরুতে কার্যকর।", "hi": "नेक-ब्लास्ट की शुरुआती अवस्था में प्रभावी।"}}
+      ]
+    },
+    {
+      "id": "rice_brown_spot",
+      "crop": "rice",
+      "pathogen": "Bipolaris oryzae",
+      "name": {"en": "Brown spot of rice", "bn": "ধানের বাদামি দাগ রোগ", "hi": "धान का भूरा धब्बा रोग"},
+      "symptoms": {
+        "en": "Oval brown spots with yellow halo, often on nutrient-stressed plants.",
+        "bn": "ডিম্বাকার বাদামি দাগ, চারপাশে হলুদ বলয়; পুষ্টিহীন গাছে বেশি হয়।",
+        "hi": "पीले घेरे वाले अंडाकार भूरे धब्बे, प्रायः पोषण-कमी वाले पौधों पर।"
+      },
+      "environment": {"t_min": 16, "t_opt_lo": 25, "t_opt_hi": 30, "t_max": 36, "rh_threshold": 86, "wetness_hours": 8},
+      "yield_loss_pct": {"low": 4, "moderate": 10, "high": 25, "severe": 45},
+      "spread_rate": 0.6,
+      "treatments": [
+        {"id": "bs_org_pseudomonas", "type": "organic", "product": "Pseudomonas fluorescens", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 7.0, "interval_days": 10, "applications": 2, "phi_days": 0, "notes": {"en": "Also apply potash (MOP) 20 kg/ha to correct deficiency.", "bn": "ঘাটতি পূরণে পটাশ (এমওপি) ২০ কেজি/হেক্টর দিন।", "hi": "कमी दूर करने हेतु पोटाश (एमओपी) 20 कि.ग्रा./हे. भी दें।"}},
+        {"id": "bs_chem_mancozeb", "type": "chemical", "product": "Mancozeb 75 WP", "dose_per_ha": 2.0, "unit": "kg", "unit_price_usd": 7.5, "interval_days": 10, "applications": 2, "phi_days": 15, "notes": {"en": "Protectant; ensure full leaf coverage.", "bn": "প্রতিরক্ষামূলক; পুরো পাতা ভিজিয়ে দিন।", "hi": "रक्षक फफूंदनाशी; पूरी पत्ती पर छिड़काव सुनिश्चित करें।"}},
+        {"id": "bs_chem_propiconazole", "type": "chemical", "product": "Propiconazole 25 EC", "dose_per_ha": 0.5, "unit": "L", "unit_price_usd": 20.0, "interval_days": 14, "applications": 2, "phi_days": 30, "notes": {"en": "Systemic; use at first sign of spots.", "bn": "অভ্যন্তরীণ কার্যকর; দাগ দেখা মাত্র দিন।", "hi": "सिस्टमिक; धब्बे दिखते ही प्रयोग करें।"}}
+      ]
+    },
+    {
+      "id": "rice_sheath_blight",
+      "crop": "rice",
+      "pathogen": "Rhizoctonia solani",
+      "name": {"en": "Sheath blight", "bn": "খোলপচা রোগ", "hi": "आवरण अंगमारी (शीथ ब्लाइट)"},
+      "symptoms": {
+        "en": "Greenish-grey water-soaked lesions on leaf sheath near water line, spreading upward.",
+        "bn": "পানির রেখার কাছে খোলে সবুজাভ-ধূসর ভেজা দাগ, উপরের দিকে ছড়ায়।",
+        "hi": "जलस्तर के पास पत्ती आवरण पर हरे-धूसर पानी-सोखे धब्बे, ऊपर की ओर फैलते हैं।"
+      },
+      "environment": {"t_min": 20, "t_opt_lo": 28, "t_opt_hi": 32, "t_max": 38, "rh_threshold": 94, "wetness_hours": 12},
+      "yield_loss_pct": {"low": 5, "moderate": 12, "high": 25, "severe": 40},
+      "spread_rate": 0.7,
+      "treatments": [
+        {"id": "sb_org_trichoderma", "type": "organic", "product": "Trichoderma harzianum", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 8.0, "interval_days": 10, "applications": 2, "phi_days": 0, "notes": {"en": "Drain field for 2-3 days; avoid excess nitrogen.", "bn": "২-৩ দিন জমির পানি শুকান; অতিরিক্ত ইউরিয়া এড়িয়ে চলুন।", "hi": "2-3 दिन खेत सुखाएँ; अधिक नाइट्रोजन से बचें।"}},
+        {"id": "sb_chem_hexaconazole", "type": "chemical", "product": "Hexaconazole 5 EC", "dose_per_ha": 1.0, "unit": "L", "unit_price_usd": 14.0, "interval_days": 14, "applications": 2, "phi_days": 30, "notes": {"en": "Direct spray at the base of tillers.", "bn": "কুশির গোড়ায় স্প্রে করুন।", "hi": "कल्लों के आधार पर छिड़काव करें।"}},
+        {"id": "sb_chem_validamycin", "type": "chemical", "product": "Validamycin 3 L", "dose_per_ha": 2.0, "unit": "L", "unit_price_usd": 9.0, "interval_days": 10, "applications": 2, "phi_days": 14, "notes": {"en": "Low toxicity antibiotic fungicide.", "bn": "কম বিষাক্ত অ্যান্টিবায়োটিক ছত্রাকনাশক।", "hi": "कम विषाक्त एंटीबायोटिक फफूंदनाशी।"}}
+      ]
+    },
+    {
+      "id": "wheat_leaf_rust",
+      "crop": "wheat",
+      "pathogen": "Puccinia triticina",
+      "name": {"en": "Wheat leaf rust", "bn": "গমের পাতার মরিচা রোগ", "hi": "गेहूँ का पत्ती रतुआ"},
+      "symptoms": {
+        "en": "Small orange-brown powdery pustules scattered on upper leaf surface.",
+        "bn": "পাতার উপরে ছোট কমলা-বাদামি গুঁড়োর মতো ফোস্কা।",
+        "hi": "पत्ती की ऊपरी सतह पर छोटे नारंगी-भूरे चूर्णी फफोले।"
+      },
+      "environment": {"t_min": 10, "t_opt_lo": 15, "t_opt_hi": 22, "t_max": 30, "rh_threshold": 80, "wetness_hours": 6},
+      "yield_loss_pct": {"low": 3, "moderate": 10, "high": 25, "severe": 40},
+      "spread_rate": 0.9,
+      "treatments": [
+        {"id": "lr_org_sulfur", "type": "organic", "product": "Wettable sulphur 80 WP", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 3.0, "interval_days": 10, "applications": 2, "phi_days": 0, "notes": {"en": "Do not apply above 30°C.", "bn": "৩০° সে. এর উপরে তাপমাত্রায় দেবেন না।", "hi": "30°C से अधिक तापमान पर प्रयोग न करें।"}},
+        {"id": "lr_chem_propiconazole", "type": "chemical", "product": "Propiconazole 25 EC", "dose_per_ha": 0.5, "unit": "L", "unit_price_usd": 20.0, "interval_days": 15, "applications": 2, "phi_days": 35, "notes": {"en": "Spray at first pustule sighting.", "bn": "প্রথম ফোস্কা দেখা মাত্র স্প্রে করুন।", "hi": "पहला फफोला दिखते ही छिड़काव करें।"}},
+        {"id": "lr_chem_tebuconazole", "type": "chemical", "product": "Tebuconazole 25.9 EC", "dose_per_ha": 0.75, "unit": "L", "unit_price_usd": 18.0, "interval_days": 15, "applications": 1, "phi_days": 35, "notes": {"en": "Single application often sufficient.", "bn": "একবার দিলেই সাধারণত যথেষ্ট।", "hi": "एक छिड़काव प्रायः पर्याप्त।"}}
+      ]
+    },
+    {
+      "id": "maize_grey_leaf_spot",
+      "crop": "maize",
+      "pathogen": "Cercospora zeae-maydis",
+      "name": {"en": "Grey leaf spot of maize", "bn": "ভুট্টার ধূসর পাতার দাগ", "hi": "मक्का का धूसर पत्ती धब्बा"},
+      "symptoms": {
+        "en": "Long rectangular grey-tan lesions running parallel to leaf veins.",
+        "bn": "পাতার শিরা বরাবর লম্বা আয়তাকার ধূসর-বাদামি দাগ।",
+        "hi": "पत्ती शिराओं के समानांतर लंबे आयताकार धूसर-भूरे धब्बे।"
+      },
+      "environment": {"t_min": 18, "t_opt_lo": 22, "t_opt_hi": 30, "t_max": 35, "rh_threshold": 90, "wetness_hours": 11},
+      "yield_loss_pct": {"low": 5, "moderate": 15, "high": 30, "severe": 50},
+      "spread_rate": 0.65,
+      "treatments": [
+        {"id": "gl_org_bacillus", "type": "organic", "product": "Bacillus subtilis", "dose_per_ha": 2.0, "unit": "kg", "unit_price_usd": 9.0, "interval_days": 10, "applications": 2, "phi_days": 0, "notes": {"en": "Remove infected residue after harvest.", "bn": "ফসল কাটার পর আক্রান্ত অবশেষ সরিয়ে ফেলুন।", "hi": "कटाई के बाद संक्रमित अवशेष हटा दें।"}},
+        {"id": "gl_chem_azoxy_propi", "type": "chemical", "product": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC", "dose_per_ha": 0.5, "unit": "L", "unit_price_usd": 34.0, "interval_days": 14, "applications": 2, "phi_days": 30, "notes": {"en": "Apply before tasseling for best protection.", "bn": "মঞ্জরি আসার আগে প্রয়োগ করলে সবচেয়ে ভালো।", "hi": "सर्वोत्तम सुरक्षा के लिए नर मंजरी से पहले प्रयोग करें।"}}
+      ]
+    },
+    {
+      "id": "tomato_early_blight",
+      "crop": "tomato",
+      "pathogen": "Alternaria solani",
+      "name": {"en": "Early blight of tomato", "bn": "টমেটোর আগাম ধসা", "hi": "टमाटर का अगेती झुलसा"},
+      "symptoms": {
+        "en": "Dark concentric 'target' rings on older leaves, with yellowing around spots.",
+        "bn": "পুরনো পাতায় কালচে বৃত্তাকার চক্রাকার দাগ, চারপাশ হলুদ।",
+        "hi": "पुरानी पत्तियों पर गहरे संकेंद्री 'लक्ष्य' जैसे छल्ले, आसपास पीलापन।"
+      },
+      "environment": {"t_min": 15, "t_opt_lo": 24, "t_opt_hi": 29, "t_max": 35, "rh_threshold": 88, "wetness_hours": 9},
+      "yield_loss_pct": {"low": 5, "moderate": 15, "high": 35, "severe": 60},
+      "spread_rate": 0.7,
+      "treatments": [
+        {"id": "eb_org_copper", "type": "organic", "product": "Copper oxychloride 50 WP", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 6.0, "interval_days": 7, "applications": 3, "phi_days": 7, "notes": {"en": "Remove lower infected leaves before spraying.", "bn": "স্প্রের আগে নিচের আক্রান্ত পাতা তুলে ফেলুন।", "hi": "छिड़काव से पहले निचली संक्रमित पत्तियाँ हटा दें।"}},
+        {"id": "eb_chem_chlorothalonil", "type": "chemical", "product": "Chlorothalonil 75 WP", "dose_per_ha": 2.0, "unit": "kg", "unit_price_usd": 12.0, "interval_days": 7, "applications": 3, "phi_days": 7, "notes": {"en": "Protectant; alternate with a systemic to avoid resistance.", "bn": "প্রতিরক্ষামূলক; প্রতিরোধ এড়াতে পর্যায়ক্রমে অন্য ওষুধ দিন।", "hi": "रक्षक; प्रतिरोध से बचने हेतु सिस्टमिक के साथ बदल-बदल कर दें।"}}
+      ]
+    },
+    {
+      "id": "potato_late_blight",
+      "crop": "potato",
+      "pathogen": "Phytophthora infestans",
+      "name": {"en": "Late blight of potato", "bn": "আলুর নাবি ধসা", "hi": "आलू का पछेती झुलसा"},
+      "symptoms": {
+        "en": "Water-soaked dark lesions at leaf edges with white fuzzy growth underneath in humid mornings.",
+        "bn": "পাতার কিনারায় ভেজা কালচে দাগ, আর্দ্র সকালে নিচে সাদা তুলার মতো আবরণ।",
+        "hi": "पत्ती किनारों पर पानी-सोखे गहरे धब्बे, नम सुबह में नीचे सफ़ेद रोएँदार वृद्धि।"
+      },
+      "environment": {"t_min": 7, "t_opt_lo": 15, "t_opt_hi": 22, "t_max": 27, "rh_threshold": 90, "wetness_hours": 10},
+      "yield_loss_pct": {"low": 8, "moderate": 20, "high": 45, "severe": 80},
+      "spread_rate": 0.95,
+      "treatments": [
+        {"id": "lb_org_copper_hydroxide", "type": "organic", "product": "Copper hydroxide 77 WP", "dose_per_ha": 2.0, "unit": "kg", "unit_price_usd": 9.0, "interval_days": 5, "applications": 3, "phi_days": 7, "notes": {"en": "Preventive only; start before symptoms if forecast is high.", "bn": "শুধু প্রতিরোধমূলক; ঝুঁকি বেশি থাকলে লক্ষণের আগেই শুরু করুন।", "hi": "केवल रोकथाम; जोखिम अधिक हो तो लक्षणों से पहले शुरू करें।"}},
+        {"id": "lb_chem_metalaxyl_mancozeb", "type": "chemical", "product": "Metalaxyl 8% + Mancozeb 64% WP", "dose_per_ha": 2.5, "unit": "kg", "unit_price_usd": 14.0, "interval_days": 10, "applications": 2, "phi_days": 14, "notes": {"en": "Curative; maximum 2 applications per season.", "bn": "নিরাময়মূলক; মৌসুমে সর্বোচ্চ ২ বার।", "hi": "उपचारात्मक; प्रति मौसम अधिकतम 2 बार।"}},
+        {"id": "lb_chem_cymoxanil", "type": "chemical", "product": "Cymoxanil 8% + Mancozeb 64% WP", "dose_per_ha": 2.0, "unit": "kg", "unit_price_usd": 16.0, "interval_days": 7, "applications": 2, "phi_days": 14, "notes": {"en": "Fast-acting; apply within 2 days of infection.", "bn": "দ্রুত কার্যকর; সংক্রমণের ২ দিনের মধ্যে দিন।", "hi": "तेज़ असर; संक्रमण के 2 दिन के भीतर प्रयोग करें।"}}
+      ]
+    }
+  ],
+  "crops": {
+    "rice":   {"name": {"en": "Rice", "bn": "ধান", "hi": "धान"}, "yield_t_per_ha": 4.5, "price_usd_per_t": 320},
+    "wheat":  {"name": {"en": "Wheat", "bn": "গম", "hi": "गेहूँ"}, "yield_t_per_ha": 3.2, "price_usd_per_t": 280},
+    "maize":  {"name": {"en": "Maize", "bn": "ভুট্টা", "hi": "मक्का"}, "yield_t_per_ha": 5.0, "price_usd_per_t": 230},
+    "tomato": {"name": {"en": "Tomato", "bn": "টমেটো", "hi": "टमाटर"}, "yield_t_per_ha": 25.0, "price_usd_per_t": 350},
+    "potato": {"name": {"en": "Potato", "bn": "আলু", "hi": "आलू"}, "yield_t_per_ha": 20.0, "price_usd_per_t": 220}
+  }
+}
