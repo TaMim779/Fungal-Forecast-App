@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: fungalforecast-api
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    envVars:
+      - key: FF_WEATHER_PROVIDER
+        value: open-meteo
+      - key: FF_DATABASE_PATH
+        value: /tmp/fungalforecast.db
