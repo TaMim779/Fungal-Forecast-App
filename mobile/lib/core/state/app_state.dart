@@ -10,7 +10,10 @@ class AppState extends ChangeNotifier {
       : _store = store,
         _language = store.language,
         _farmer = store.farmer,
-        _fieldOfficerMode = store.fieldOfficerMode;
+        _token = store.token,
+        _fieldOfficerMode = store.fieldOfficerMode {
+    if (_token != null && _token!.isNotEmpty) api.token = _token;
+  }
 
   final LocalStore _store;
   final ApiClient api;
@@ -21,6 +24,9 @@ class AppState extends ChangeNotifier {
 
   Farmer? _farmer;
   Farmer? get farmer => _farmer;
+
+  String? _token;
+  bool get isLoggedIn => _token != null && _token!.isNotEmpty && _farmer != null;
 
   bool _fieldOfficerMode;
   bool get fieldOfficerMode => _fieldOfficerMode;
@@ -94,20 +100,80 @@ class AppState extends ChangeNotifier {
     double? lat,
     double? lon,
   }) async {
-    final f = await api.registerFarmer(
-      name: name,
-      phone: phone,
-      language: _language,
-      country: country,
-      crop: crop,
-      fieldSizeHa: fieldSizeHa,
-      lat: lat,
-      lon: lon,
-    );
+    final Farmer f;
+    if (isLoggedIn) {
+      f = await api.updateProfile(
+        name: name,
+        phone: phone,
+        language: _language,
+        country: country,
+        crop: crop,
+        fieldSizeHa: fieldSizeHa,
+        lat: lat,
+        lon: lon,
+      );
+    } else {
+      f = await api.registerFarmer(
+        name: name,
+        phone: phone,
+        language: _language,
+        country: country,
+        crop: crop,
+        fieldSizeHa: fieldSizeHa,
+        lat: lat,
+        lon: lon,
+      );
+    }
     _farmer = f;
     await _store.setFarmer(f);
     notifyListeners();
     return f;
+  }
+
+  Future<void> login({required String phone, required String password}) async {
+    final session = await api.login(phone: phone.trim(), password: password);
+    await _applySession(session.token, session.farmer);
+  }
+
+  Future<void> register({
+    required String name,
+    required String phone,
+    required String password,
+    required String country,
+    required String crop,
+    required double fieldSizeHa,
+  }) async {
+    final session = await api.registerAccount(
+      name: name.trim(),
+      phone: phone.trim(),
+      password: password,
+      language: _language,
+      country: country,
+      crop: crop,
+      fieldSizeHa: fieldSizeHa,
+    );
+    await _applySession(session.token, session.farmer);
+  }
+
+  Future<void> logout() async {
+    try {
+      if (_token != null) await api.logout();
+    } catch (_) {}
+    _token = null;
+    _farmer = null;
+    api.token = null;
+    await _store.setToken(null);
+    await _store.setFarmer(null);
+    notifyListeners();
+  }
+
+  Future<void> _applySession(String token, Farmer farmer) async {
+    _token = token;
+    _farmer = farmer;
+    api.token = token;
+    await _store.setToken(token);
+    await _store.setFarmer(farmer);
+    notifyListeners();
   }
 
   /// Keeps a local-only profile when the server is unreachable.

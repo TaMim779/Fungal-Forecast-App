@@ -173,6 +173,42 @@ def test_ledger_flow(client, sick_leaf):
     assert bad.status_code == 422
 
 
+def test_auth_register_login_profile_and_logout(client):
+    body = {
+        "name": "Tamim", "phone": "+8801711999888", "password": "1234",
+        "language": "bn", "country": "BD", "crop": "rice", "field_size_ha": 1.2, **DHAKA,
+    }
+    created = client.post("/api/v1/auth/register", json=body)
+    assert created.status_code == 200, created.text
+    payload = created.json()
+    assert payload["farmer"]["name"] == "Tamim"
+    assert "password_hash" not in payload["farmer"]
+    token = payload["token"]
+
+    again = client.post("/api/v1/auth/register", json=body)
+    assert again.status_code == 409
+
+    bad = client.post("/api/v1/auth/login", json={"phone": body["phone"], "password": "nope"})
+    assert bad.status_code == 401
+
+    logged = client.post("/api/v1/auth/login", json={"phone": body["phone"], "password": "1234"})
+    assert logged.status_code == 200
+    headers = {"Authorization": f"Bearer {token}"}
+    me = client.get("/api/v1/auth/me", headers=headers)
+    assert me.status_code == 200 and me.json()["id"] == payload["farmer"]["id"]
+
+    updated = client.patch(
+        "/api/v1/farmers/me",
+        headers=headers,
+        json={**{k: v for k, v in body.items() if k != "password"}, "name": "Tamim Hasan"},
+    )
+    assert updated.status_code == 200 and updated.json()["name"] == "Tamim Hasan"
+
+    assert client.get("/api/v1/auth/me").status_code == 401
+    assert client.post("/api/v1/auth/logout", headers=headers).status_code == 200
+    assert client.get("/api/v1/auth/me", headers=headers).status_code == 401
+
+
 def test_diagnose_validation(client):
     r = client.post("/api/v1/diagnose", files={"image": ("x.png", b"garbage", "image/png")}, data={"crop": "rice"})
     assert r.status_code == 422

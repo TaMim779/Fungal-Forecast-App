@@ -32,3 +32,21 @@ String shortDate(String iso, String locale) {
   if (d == null) return iso;
   return DateFormat.MMMd(locale).format(d);
 }
+
+/// 5–11: morning, 12–15: afternoon, 16–18: evening, otherwise night.
+enum DayPeriod { morning, afternoon, evening, night }
+
+DayPeriod dayPeriod([DateTime? now]) {
+  final hour = (now ?? DateTime.now()).hour;
+  if (hour >= 5 && hour < 12) return DayPeriod.morning;
+  if (hour >= 12 && hour < 16) return DayPeriod.afternoon;
+  if (hour >= 16 && hour < 19) return DayPeriod.evening;
+  return DayPeriod.night;
+}
+
+String greetingFor(AppLocalizations l, String name, [DateTime? now]) => switch (dayPeriod(now)) {
+      DayPeriod.morning => l.greetingMorning(name),
+      DayPeriod.afternoon => l.greetingAfternoon(name),
+      DayPeriod.evening => l.greetingEvening(name),
+      DayPeriod.night => l.greetingNight(name),
+    };

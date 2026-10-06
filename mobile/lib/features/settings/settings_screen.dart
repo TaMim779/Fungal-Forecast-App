@@ -234,6 +234,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   : const Icon(Icons.save_outlined),
               label: Text(l.save),
             ),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () => app.logout(),
+              icon: const Icon(Icons.logout),
+              label: Text(l.logout),
+            ),
           ],
         ),
       ),

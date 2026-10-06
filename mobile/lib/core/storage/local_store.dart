@@ -19,6 +19,7 @@ class LocalStore {
   static const _kDiagnoses = 'diagnoses_cache';
   static const _kCropForecast = 'crop_forecast_cache';
   static const _kOfficer = 'field_officer_mode';
+  static const _kToken = 'auth_token';
 
   /// Default server URL. Override at build time with
   /// `--dart-define=FF_API_URL=http://10.0.2.2:8000` (Android emulator) or
@@ -36,6 +37,15 @@ class LocalStore {
 
   bool get fieldOfficerMode => _prefs.getBool(_kOfficer) ?? false;
   Future<void> setFieldOfficerMode(bool v) => _prefs.setBool(_kOfficer, v);
+
+  String? get token => _prefs.getString(_kToken);
+  Future<void> setToken(String? v) async {
+    if (v == null || v.isEmpty) {
+      await _prefs.remove(_kToken);
+    } else {
+      await _prefs.setString(_kToken, v);
+    }
+  }
 
   Farmer? get farmer {
     final raw = _prefs.getString(_kFarmer);

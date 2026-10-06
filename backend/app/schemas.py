@@ -27,6 +27,20 @@ class Farmer(FarmerIn):
     created_at: str
 
 
+class RegisterIn(FarmerIn):
+    password: str = Field(min_length=4, max_length=72)
+
+
+class LoginIn(BaseModel):
+    phone: str = Field(min_length=6, max_length=20)
+    password: str = Field(min_length=1, max_length=72)
+
+
+class AuthOut(BaseModel):
+    token: str
+    farmer: Farmer
+
+
 # ---- forecast ----------------------------------------------------------------
 class DayRiskOut(BaseModel):
     day: str

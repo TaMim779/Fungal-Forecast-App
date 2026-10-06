@@ -23,8 +23,15 @@ CREATE TABLE IF NOT EXISTS farmers (
     crop TEXT NOT NULL DEFAULT 'rice',
     field_size_ha REAL NOT NULL DEFAULT 1.0,
     lat REAL, lon REAL,
+    password_hash TEXT,
     created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS sessions (
+    token TEXT PRIMARY KEY,
+    farmer_id TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_farmer ON sessions(farmer_id);
 CREATE TABLE IF NOT EXISTS diagnoses (
     id TEXT PRIMARY KEY,
     farmer_id TEXT,
@@ -87,9 +94,24 @@ class Database:
         self._lock = threading.Lock()
         with self._lock:
             self._conn.executescript(SCHEMA)
+            self._ensure_password_column()
 
     def close(self) -> None:
         self._conn.close()
+
+    def _ensure_password_column(self) -> None:
+        cols = {row[1] for row in self._conn.execute("PRAGMA table_info(farmers)")}
+        if "password_hash" not in cols:
+            self._conn.execute("ALTER TABLE farmers ADD COLUMN password_hash TEXT")
+            self._conn.commit()
+
+    @staticmethod
+    def _public_farmer(row: dict[str, Any] | None) -> dict[str, Any] | None:
+        if row is None:
+            return None
+        data = dict(row)
+        data.pop("password_hash", None)
+        return data
 
     # ---- helpers ------------------------------------------------------------
     def _execute(self, sql: str, params: tuple = ()) -> sqlite3.Cursor:
@@ -131,8 +153,79 @@ class Database:
         )
         return self.get_farmer(fid)  # type: ignore[return-value]
 
+    def phone_taken(self, phone: str, except_id: str | None = None) -> bool:
+        row = self._fetchone("SELECT id FROM farmers WHERE phone = ?", (phone,))
+        return bool(row) and row["id"] != except_id
+
+    def create_account(self, data: dict[str, Any], password_hash: str) -> dict[str, Any]:
+        if self.phone_taken(data["phone"]):
+            raise ValueError("phone_taken")
+        fid = new_id("frm")
+        self._execute(
+            """INSERT INTO farmers (id,name,phone,language,country,crop,field_size_ha,lat,lon,password_hash,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (
+                fid, data["name"], data["phone"], data["language"], data["country"], data["crop"],
+                data["field_size_ha"], data.get("lat"), data.get("lon"), password_hash, utcnow(),
+            ),
+        )
+        return self.get_farmer(fid)  # type: ignore[return-value]
+
+    def update_farmer(self, farmer_id: str, data: dict[str, Any]) -> dict[str, Any] | None:
+        if not self.get_farmer(farmer_id):
+            return None
+        if self.phone_taken(data["phone"], except_id=farmer_id):
+            raise ValueError("phone_taken")
+        self._execute(
+            """UPDATE farmers SET name=?, phone=?, language=?, country=?, crop=?, field_size_ha=?, lat=?, lon=?
+               WHERE id=?""",
+            (
+                data["name"], data["phone"], data["language"], data["country"], data["crop"],
+                data["field_size_ha"], data.get("lat"), data.get("lon"), farmer_id,
+            ),
+        )
+        return self.get_farmer(farmer_id)
+
+    def set_password(self, farmer_id: str, password_hash: str) -> None:
+        self._execute("UPDATE farmers SET password_hash=? WHERE id=?", (password_hash, farmer_id))
+
+    def farmer_secret_by_phone(self, phone: str) -> dict[str, Any] | None:
+        return self._fetchone("SELECT * FROM farmers WHERE phone = ?", (phone,))
+
+    def create_session(self, farmer_id: str) -> str:
+        from .security import new_token
+
+        token = new_token()
+        self._execute(
+            "INSERT INTO sessions (token, farmer_id, created_at) VALUES (?,?,?)",
+            (token, farmer_id, utcnow()),
+        )
+        return token
+
+    def revoke_session(self, token: str) -> None:
+        self._execute("DELETE FROM sessions WHERE token = ?", (token,))
+
+    def farmer_by_token(self, token: str) -> dict[str, Any] | None:
+        row = self._fetchone(
+            """SELECT f.* FROM farmers f
+               JOIN sessions s ON s.farmer_id = f.id
+               WHERE s.token = ?""",
+            (token,),
+        )
+        return self._public_farmer(row)
+        fid = new_id("frm")
+        self._execute(
+            """INSERT INTO farmers (id,name,phone,language,country,crop,field_size_ha,lat,lon,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (
+                fid, data["name"], data["phone"], data["language"], data["country"], data["crop"],
+                data["field_size_ha"], data.get("lat"), data.get("lon"), utcnow(),
+            ),
+        )
+        return self.get_farmer(fid)  # type: ignore[return-value]
+
     def get_farmer(self, farmer_id: str) -> dict[str, Any] | None:
-        return self._fetchone("SELECT * FROM farmers WHERE id = ?", (farmer_id,))
+        return self._public_farmer(self._fetchone("SELECT * FROM farmers WHERE id = ?", (farmer_id,)))
 
     # ---- diagnoses ----------------------------------------------------------
     def insert_diagnosis(self, d: dict[str, Any]) -> str:

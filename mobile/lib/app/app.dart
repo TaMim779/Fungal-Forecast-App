@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../core/api/api_client.dart';
@@ -25,7 +26,7 @@ class _FungalForecastAppState extends State<FungalForecastApp> {
   late final AppState _app;
   late final HomeController _home;
   late final TtsService _tts;
-  late final _router = buildRouter();
+  late final GoRouter _router;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _FungalForecastAppState extends State<FungalForecastApp> {
     _app = AppState(store: widget.store, api: api);
     _home = HomeController(app: _app, store: widget.store);
     _tts = widget.tts ?? TtsService();
+    _router = buildRouter(_app);
     _app.init();
   }
 

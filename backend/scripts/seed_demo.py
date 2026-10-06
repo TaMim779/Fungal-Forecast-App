@@ -68,11 +68,17 @@ def main() -> int:
         health.raise_for_status()
         print("API:", health.json())
 
-        demo = register(
-            c, name="Rahim Uddin", phone="+8801711223344", language="bn", country="BD",
-            crop="rice", field_size_ha=1.5, lat=DEMO_LAT, lon=DEMO_LON,
-        )
+        demo_auth = c.post("/api/v1/auth/register", json={
+            "name": "Rahim Uddin", "phone": "+8801711223344", "password": "1234",
+            "language": "bn", "country": "BD", "crop": "rice", "field_size_ha": 1.5,
+            "lat": DEMO_LAT, "lon": DEMO_LON,
+        })
+        if demo_auth.status_code == 409:
+            demo_auth = c.post("/api/v1/auth/login", json={"phone": "+8801711223344", "password": "1234"})
+        demo_auth.raise_for_status()
+        demo = demo_auth.json()["farmer"]
         print(f"Demo farmer: {demo['id']} ({demo['name']})")
+        print("Login with phone +8801711223344 and password 1234")
 
         # Neighbouring farms report disease -> community outbreak + pre-emptive alert.
         neighbours = []

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fungal_forecast/core/models/models.dart';
+import 'package:fungal_forecast/shared/formatters.dart';
 
 import 'helpers/fake_api.dart';
 
@@ -58,5 +59,18 @@ void main() {
     final fc = CropForecast.fromJson(sampleCropForecastJson());
     expect(fc.diseases.single.dailyRisk, hasLength(5));
     expect(fc.raw, isNotNull);
+  });
+
+  test('dayPeriod follows morning, afternoon, evening and night windows', () {
+    DateTime at(int hour) => DateTime(2026, 10, 6, hour);
+    expect(dayPeriod(at(5)), DayPeriod.morning);
+    expect(dayPeriod(at(11)), DayPeriod.morning);
+    expect(dayPeriod(at(12)), DayPeriod.afternoon);
+    expect(dayPeriod(at(15)), DayPeriod.afternoon);
+    expect(dayPeriod(at(16)), DayPeriod.evening);
+    expect(dayPeriod(at(18)), DayPeriod.evening);
+    expect(dayPeriod(at(19)), DayPeriod.night);
+    expect(dayPeriod(at(0)), DayPeriod.night);
+    expect(dayPeriod(at(4)), DayPeriod.night);
   });
 }

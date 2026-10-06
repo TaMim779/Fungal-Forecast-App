@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import __version__
 from .config import settings
 from .database import Database
-from .routers import community, core
+from .routers import auth, community, core
 from .services.classifier import get_classifier
 from .services.knowledge import get_knowledge_base
 from .services.weather import get_weather_provider
@@ -52,6 +52,7 @@ def create_app(database_path: str | None = None) -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(core.router, prefix="/api/v1")
+    app.include_router(auth.router, prefix="/api/v1")
     app.include_router(community.router, prefix="/api/v1")
     return app
 

@@ -6,7 +6,10 @@ import 'core/storage/local_store.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.wait([initializeDateFormatting('bn'), initializeDateFormatting('hi')]);
+  await Future.wait([
+    initializeDateFormatting('bn'),
+    initializeDateFormatting('hi'),
+  ]);
   final store = await LocalStore.open();
   runApp(FungalForecastApp(store: store));
 }

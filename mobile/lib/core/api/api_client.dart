@@ -17,12 +17,18 @@ class ApiException implements Exception {
 /// All methods throw [ApiException] on non-2xx responses and rethrow
 /// transport errors so callers can decide how to degrade (e.g. offline cache).
 class ApiClient {
-  ApiClient({required this.baseUrl, http.Client? client, this.timeout = const Duration(seconds: 20)})
+  ApiClient({required this.baseUrl, http.Client? client, this.timeout = const Duration(seconds: 20), this.token})
       : _client = client ?? http.Client();
 
   String baseUrl;
+  String? token;
   final http.Client _client;
   final Duration timeout;
+
+  Map<String, String> get _jsonHeaders => {
+        'content-type': 'application/json',
+        if (token != null && token!.isNotEmpty) 'authorization': 'Bearer $token',
+      };
 
   Uri _uri(String path, [Map<String, dynamic>? query]) {
     final base = baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
@@ -34,16 +40,28 @@ class ApiClient {
   }
 
   Future<dynamic> _get(String path, [Map<String, dynamic>? query]) async {
-    final res = await _client.get(_uri(path, query)).timeout(timeout);
+    final res = await _client.get(_uri(path, query), headers: _jsonHeaders).timeout(timeout);
     return _decode(res);
   }
 
   Future<dynamic> _post(String path, Map<String, dynamic> body, [Map<String, dynamic>? query]) async {
     final res = await _client
-        .post(_uri(path, query), headers: {'content-type': 'application/json'}, body: jsonEncode(body))
+        .post(_uri(path, query), headers: _jsonHeaders, body: jsonEncode(body))
         .timeout(timeout);
     return _decode(res);
   }
+
+  Future<dynamic> _patch(String path, Map<String, dynamic> body) async {
+    final res = await _client.patch(_uri(path), headers: _jsonHeaders, body: jsonEncode(body)).timeout(timeout);
+    return _decode(res);
+  }
+
+  Future<({String token, Farmer farmer})> _session(String path, Map<String, dynamic> body) async {
+    final j = await _post(path, body) as Map<String, dynamic>;
+    return (token: _sToken(j['token']), farmer: Farmer.fromJson(j['farmer'] as Map<String, dynamic>));
+  }
+
+  String _sToken(dynamic v) => v?.toString() ?? '';
 
   dynamic _decode(http.Response res) {
     final text = utf8.decode(res.bodyBytes);
@@ -82,6 +100,53 @@ class ApiClient {
     double? lon,
   }) async =>
       Farmer.fromJson(await _post('/farmers', {
+        'name': name,
+        'phone': phone,
+        'language': language,
+        'country': country,
+        'crop': crop,
+        'field_size_ha': fieldSizeHa,
+        'lat': lat,
+        'lon': lon,
+      }));
+
+  Future<({String token, Farmer farmer})> registerAccount({
+    required String name,
+    required String phone,
+    required String password,
+    required String language,
+    required String country,
+    required String crop,
+    required double fieldSizeHa,
+  }) =>
+      _session('/auth/register', {
+        'name': name,
+        'phone': phone,
+        'password': password,
+        'language': language,
+        'country': country,
+        'crop': crop,
+        'field_size_ha': fieldSizeHa,
+      });
+
+  Future<({String token, Farmer farmer})> login({required String phone, required String password}) =>
+      _session('/auth/login', {'phone': phone, 'password': password});
+
+  Future<void> logout() async {
+    await _post('/auth/logout', {});
+  }
+
+  Future<Farmer> updateProfile({
+    required String name,
+    required String phone,
+    required String language,
+    required String country,
+    required String crop,
+    required double fieldSizeHa,
+    double? lat,
+    double? lon,
+  }) async =>
+      Farmer.fromJson(await _patch('/farmers/me', {
         'name': name,
         'phone': phone,
         'language': language,

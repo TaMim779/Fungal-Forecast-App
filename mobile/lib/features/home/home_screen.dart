@@ -82,7 +82,7 @@ class _Hero extends StatelessWidget {
     final t = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       if (name != null && name!.isNotEmpty)
-        Text(l.greeting(name!), style: t.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
+        Text(greetingFor(l, name!), style: t.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
       Text(tagline, style: t.textTheme.bodyMedium?.copyWith(color: t.colorScheme.onSurfaceVariant)),
     ]);
   }

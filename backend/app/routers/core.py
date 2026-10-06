@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Upload
 from .. import __version__
 from ..config import settings
 from ..database import Database
-from ..deps import get_classifier_dep, get_db, get_kb, get_weather
+from ..deps import current_farmer, get_classifier_dep, get_db, get_kb, get_weather
 from ..schemas import DiagnosisOut, Farmer, FarmerIn, ForecastOut, TreatmentPlan
 from ..services import risk_engine
 from ..services.classifier import LeafClassifier
@@ -66,6 +66,28 @@ def get_farmer(farmer_id: str, db: Database = Depends(get_db)):
     if not farmer:
         raise HTTPException(404, "Farmer not found")
     return farmer
+
+
+@router.patch("/farmers/me", response_model=Farmer, tags=["farmers"])
+def update_me(
+    body: FarmerIn,
+    farmer: dict = Depends(current_farmer),
+    db: Database = Depends(get_db),
+    kb: KnowledgeBase = Depends(get_kb),
+):
+    if body.crop not in kb.crops():
+        raise HTTPException(422, f"Unknown crop '{body.crop}'")
+    data = body.model_dump()
+    data["language"] = normalize_lang(body.language)
+    data["country"] = body.country.upper()
+    data["phone"] = body.phone.strip()
+    try:
+        updated = db.update_farmer(farmer["id"], data)
+    except ValueError as exc:
+        if str(exc) == "phone_taken":
+            raise HTTPException(409, "This phone number is already registered") from exc
+        raise
+    return updated
 
 
 # ---- diagnosis ---------------------------------------------------------------

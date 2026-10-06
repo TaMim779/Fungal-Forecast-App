@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/models/models.dart';
+import '../core/state/app_state.dart';
 import '../features/agronomist/agronomist_screen.dart';
+import '../features/auth/auth_screen.dart';
 import '../features/dealers/dealers_screen.dart';
 import '../features/diagnose/diagnose_screen.dart';
 import '../features/diagnose/result_screen.dart';
@@ -14,6 +16,7 @@ import '../features/shell/app_shell.dart';
 
 abstract final class Routes {
   static const home = '/home';
+  static const auth = '/login';
   static const diagnose = '/diagnose';
   static const outbreaks = '/outbreaks';
   static const ledger = '/ledger';
@@ -23,9 +26,17 @@ abstract final class Routes {
   static const agronomist = '/agronomist';
 }
 
-GoRouter buildRouter() => GoRouter(
-      initialLocation: Routes.home,
+GoRouter buildRouter(AppState app) => GoRouter(
+      initialLocation: app.isLoggedIn ? Routes.home : Routes.auth,
+      refreshListenable: app,
+      redirect: (context, state) {
+        final onAuth = state.matchedLocation == Routes.auth;
+        if (!app.isLoggedIn && !onAuth) return Routes.auth;
+        if (app.isLoggedIn && onAuth) return Routes.home;
+        return null;
+      },
       routes: [
+        GoRoute(path: Routes.auth, builder: (_, _) => const AuthScreen()),
         StatefulShellRoute.indexedStack(
           builder: (context, state, shell) => AppShell(shell: shell),
           branches: [

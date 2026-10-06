@@ -22,6 +22,7 @@ Future<LocalStore> storeWith({String lang = 'en', bool withFarmer = true}) async
   SharedPreferences.setMockInitialValues({
     'lang': lang,
     if (withFarmer) 'farmer': jsonEncode(sampleFarmerJson()),
+    if (withFarmer) 'auth_token': 'test-token',
   });
   return LocalStore.open();
 }
@@ -60,7 +61,12 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hello, Rahim'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is Text && (w.data?.contains('Rahim') ?? false),
+      ),
+      findsWidgets,
+    );
     expect(find.text('Scan a leaf'), findsOneWidget);
     expect(find.text('5-day risk outlook for your Rice'), findsOneWidget);
     expect(find.textContaining('Sheath blight'), findsWidgets); // community alert
@@ -161,5 +167,21 @@ void main() {
     await tester.pumpWidget(harness(store: store, child: const OutbreakMapScreen(showMapTiles: false)));
     await tester.pumpAndSettle();
     expect(find.textContaining('Set your field location'), findsOneWidget);
+  });
+
+  testWidgets('logged-out users land on login', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2340);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+
+    final store = await storeWith(withFarmer: false);
+    await tester.pumpWidget(FungalForecastApp(
+      store: store,
+      apiClient: ApiClient(baseUrl: 'http://x', client: fakeApiClient()),
+      tts: TtsService(),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Log in'), findsWidgets);
+    expect(find.text('New here? Create an account'), findsOneWidget);
   });
 }
